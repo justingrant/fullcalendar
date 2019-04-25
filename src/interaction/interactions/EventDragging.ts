@@ -10,7 +10,6 @@ import {
   diffDates, enableCursor, disableCursor,
   EventRenderRange, getElSeg,
   EventApi,
-  View,
   eventDragMutationMassager,
   Interaction, InteractionSettings, interactionSettingsStore
 } from '@fullcalendar/core'
@@ -301,7 +300,7 @@ export default class EventDragging extends Interaction { // TODO: rename to Even
           let dropArg = receivingCalendar.buildDatePointApi(finalHit.dateSpan) as ExternalDropApi
           dropArg.draggedEl = ev.subjectEl as HTMLElement
           dropArg.jsEvent = ev.origEvent
-          dropArg.view = finalHit.component as View // ?
+          dropArg.view = finalHit.component.view
 
           receivingCalendar.publiclyTrigger('drop', [ dropArg ])
 
@@ -313,7 +312,7 @@ export default class EventDragging extends Interaction { // TODO: rename to Even
                 mutatedRelevantEvents.defs[eventDef.defId],
                 mutatedRelevantEvents.instances[eventInstance.instanceId]
               ),
-              view: finalHit.component
+              view: finalHit.component.view
             }
           ])
         }
