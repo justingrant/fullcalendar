@@ -70,6 +70,20 @@ export interface DropInfo {
   end: Date
 }
 
+export type EventHandlerName =
+  'selectAllow' | 'eventAllow' | 'eventDataTransform' | 'datesRender' |
+  'datesDestroy' | 'dayRender' | 'windowResize' | 'dateClick' | 'eventClick' |
+  'eventMouseEnter' | 'eventMouseLeave' | 'select' | 'unselect' | 'loading' |
+  'eventRender' | 'eventPositioned' | '_eventsPositioned' | 'eventDestroy' |
+  'eventDragStart' | 'eventDragStop' | 'eventDrop' | '_destroyed' | 'drop' |
+  'eventResizeStart' | 'eventResizeStop' | 'eventResize' | 'eventReceive' |
+  'eventLeave' | 'viewSkeletonRender' | 'viewSkeletonDestroy' |
+  'eventLimitClick'
+
+export type EventHandlerArgs<T extends EventHandlerName> =
+  Parameters<Extract<OptionsInput[T], (...args: any[]) => any>>
+export type EventHandlerArg<T extends EventHandlerName> = EventHandlerArgs<T>[0]
+
 export interface OptionsInputBase {
   header?: boolean | ToolbarInput
   footer?: boolean | ToolbarInput

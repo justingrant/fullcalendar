@@ -4,7 +4,7 @@ import { default as EmitterMixin, EmitterInterface } from './common/EmitterMixin
 import OptionsManager from './OptionsManager'
 import View from './View'
 import Theme from './theme/Theme'
-import { OptionsInput } from './types/input-types'
+import { OptionsInput, EventHandlerName, EventHandlerArgs } from './types/input-types'
 import { Locale, buildLocale, parseRawLocales, RawLocaleMap } from './datelib/locale'
 import { DateEnv, DateInput } from './datelib/env'
 import { DateMarker, startOfDay } from './datelib/marker'
@@ -702,13 +702,15 @@ export default class Calendar {
   // -----------------------------------------------------------------------------------------------------------------
 
 
-  hasPublicHandlers(name: string): boolean {
+  hasPublicHandlers<T extends EventHandlerName>(name: T): boolean {
     return this.hasHandlers(name) ||
       this.opt(name) // handler specified in options
   }
 
-
-  publiclyTrigger(name: string, args?) {
+  publiclyTrigger<T extends EventHandlerName>(
+    name: T,
+    args?: EventHandlerArgs<T>
+  ) {
     let optHandler = this.opt(name)
 
     this.triggerWith(name, this, args)
@@ -719,7 +721,10 @@ export default class Calendar {
   }
 
 
-  publiclyTriggerAfterSizing(name, args) {
+  publiclyTriggerAfterSizing<T extends EventHandlerName>(
+    name: T,
+    args: EventHandlerArgs<T>
+  ) {
     let { afterSizingTriggers } = this;
 
     (afterSizingTriggers[name] || (afterSizingTriggers[name] = [])).push(args)
@@ -731,7 +736,7 @@ export default class Calendar {
 
     for (let name in afterSizingTriggers) {
       for (let args of afterSizingTriggers[name]) {
-        this.publiclyTrigger(name, args)
+        this.publiclyTrigger(name as EventHandlerName, args)
       }
     }
 
